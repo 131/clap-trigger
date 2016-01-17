@@ -32,8 +32,12 @@ trigger.start(function(){
  
 trigger.stop(); //stop listening
 
-trigger.on(engine.EVENT_CLAP, function() {
+trigger.clap(function() {
   console.log("Simple clap here");
+});
+
+trigger.claps(2, function() {
+  console.log("Double clap here"); 
 });
 
 

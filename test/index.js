@@ -26,9 +26,30 @@ describe("Initial scenario", function(){
       expect(err).to.be("Already running")
     });
 
-    trigger.on("clap", function(){
+    trigger.clap(function(){
       claps ++;
       console.log("GOT CLAP (claps : %d)", claps);
+    });
+
+    setTimeout(trigger.stop, 5000);
+
+  });
+
+  
+  it("Should find a double clap", function(done) {
+    console.log("Please DOUPLE clap NOW, timeout in 5s");
+
+    var trigger = new engine();
+    var claps   = 0;
+
+    trigger.start(function(){
+      expect(claps).to.be(1);
+      done();
+    });
+
+    trigger.claps(2, 2000, function(){
+      claps ++;
+      console.log("GOT DOUBLE CLAP (claps : %d)", claps);
     });
 
     setTimeout(trigger.stop, 5000);

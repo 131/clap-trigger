@@ -2,12 +2,8 @@
 
 var spawn  = require('child_process').spawn;
 var Class   = require('uclass');
-var Events  = require('uclass/events');
-
-var EVENT_CLAP = 'clap';
 
 var ClapTrigger = new Class({
-  Implements : [Events],
   Binds :  ['stop', 'start'],
 
   config : {
@@ -24,27 +20,53 @@ var ClapTrigger = new Class({
     this._started = true;
 
     this._listen(function(err) {
-      console.log(err);
       //chain loop has ended
       chain();
     });
   },
 
   stop : function(){
-    console.log("Stopping now");
 
     this._started = false;
 
     if(this.recorder) {
-      console.log("Killing recorder");
       this.recorder.kill();
       this.recorder = null;
     }
-
   },
 
+  _timing : [],
+
   _gotClap : function(){
-    this.emit(EVENT_CLAP);
+    var self = this;
+
+    this._timing.push(Date.now());
+
+    if(this._timing.length > 25) //toconfig
+      this._timing.shift(); //keep
+
+    this.clapsList.forEach(function(trigger){
+      var slice = self._timing.slice(-trigger.nb), delay = slice[trigger.nb - 1] - slice[0];
+      if(slice.length == trigger.nb && delay < trigger.timing)
+        setTimeout(function(){ trigger.callback(delay) }, 0); //detach
+    });
+  },
+
+
+  clapsList : [],
+
+  claps : function() { // nb, [timing,] callback
+    var args = [].slice.apply(arguments);
+    var callback = args.pop();
+    var nb       = args.shift();
+    var timing   = args.shift() || 2000;
+
+    this.clapsList.push({nb : nb, timing : timing, callback : callback});
+  },
+
+
+  clap : function(callback) {
+    this.claps(1, callback);
   },
 
 
@@ -67,8 +89,8 @@ var ClapTrigger = new Class({
     child.stderr.on("data", function(buf){ body += buf; });
 
     child.on("exit", function() {
-      var clap = self.isClap(self._parse(body));
-      console.log("Checking loop", clap);
+      var stats = self._parse(body), clap = self.isClap(stats);
+      //console.log({stats:stats, clap:clap});
 
       if(clap)
         self._gotClap();
@@ -78,15 +100,14 @@ var ClapTrigger = new Class({
 
 
   isClap : function(stats) {
-    console.log(stats);
 
     var self = this;
     var duration = stats['Length (seconds)'],
         rms      = stats['RMS amplitude'],
         max      = stats['Maximum amplitude'];
 
-    console.log({duration:duration, rms:rms, max:max});
-    // Does it have the characteristics of a clap
+    //console.log({duration:duration, rms:rms, max:max});
+
     var isClap = true
           && duration < self.config.CLAP_MAX_DURATION
           && max > self.config.CLAP_AMPLITUDE_THRESHOLD
@@ -120,5 +141,4 @@ var ClapTrigger = new Class({
 
 
 module.exports            = ClapTrigger;
-module.exports.EVENT_CLAP = EVENT_CLAP;
 
