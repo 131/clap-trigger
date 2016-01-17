@@ -1,6 +1,6 @@
 {
   "name": "clap-trigger",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Clap detection trigger for nodejs",
   "main": "index.js",
   "directories": {
@@ -34,5 +34,4 @@
     "istanbul": "^0.3.18",
     "mocha": "^2.2.5"
   }
-
 }
