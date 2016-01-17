@@ -1,0 +1,36 @@
+{
+  "name": "clap-trigger",
+  "version": "0.9.0",
+  "description": "nodejs clap detection trigger",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node node_modules/istanbul/lib/cli.js  cover node_modules/mocha/bin/_mocha test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/131/clap-trigger.git"
+  },
+  "keywords": [
+    "sox",
+    "clap",
+    "audio"
+  ],
+  "author": "Francois Leurent <131.js@cloudyks.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/131/clap-trigger/issues"
+  },
+  "homepage": "https://github.com/131/clap-trigger#readme",
+  "dependencies": {
+    "uclass": "^2.0.7"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "istanbul": "^0.3.18",
+    "mocha": "^2.2.5"
+  }
+
+}
