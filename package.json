@@ -16,7 +16,9 @@
   "keywords": [
     "sox",
     "clap",
-    "audio"
+    "audio",
+    "trigger",
+    "detector
   ],
   "author": "Francois Leurent <131.js@cloudyks.org>",
   "license": "MIT",
