@@ -3,7 +3,7 @@ Clap detection trigger for nodejs
 ===
 
 # Motivation
-I just bought a Phillips Hue lamp. My son and i want to switch on / off by clapping hands.
+I just bought a Phillips Hue lamp. My son and i want to switch on / off by clapping hands (see working code here http://pastie.org/10692960)
 
 This module conforms to "strict minimal composition" (use browserify and you'll get the tiniest possible code, with all underlying componants fully tested)
 
