@@ -17,7 +17,10 @@ Sox is available on all platforms.
 Have sox.exe available in your path (download http://sox.sourceforge.net/)
 
 # Linux requirements
-Have sox available in your path.
+```
+apt-get install sox
+gpasswd -a [username] audio
+```
 
 
 # API

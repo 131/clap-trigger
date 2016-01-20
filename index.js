@@ -1,7 +1,8 @@
 "use strict";
 
-var spawn  = require('child_process').spawn;
+var spawn   = require('child_process').spawn;
 var Class   = require('uclass');
+var os      = require('os');
 
 var ClapTrigger = new Class({
   Binds :  ['stop', 'start'],
@@ -76,14 +77,18 @@ var ClapTrigger = new Class({
     if(!this._started)
       return chain("Listener not running");
 
-    var args = [];
-    args.push("-t", "waveaudio", "-d");
+    var args = ({
+      'Linux'      : ['-t', 'alsa', 'hw:1,0'],
+      'Windows_NT' : ['-t', 'waveaudio', '-d'],
+    }) [os.type()];
+
     args.push("-t",  "wav", "-n");
     args.push("--no-show-progress");
     args.push("silence", "1", "0.0001", this.config.DETECTION_PERCENTAGE_START, "1", "0.1", this.config.DETECTION_PERCENTAGE_END);
     args.push("stat");
 
-    var child = spawn("sox.exe", args), body  = "";
+
+    var child = spawn("sox", args), body  = "";
 
     self.recorder = child;
     child.stderr.on("data", function(buf){ body += buf; });
