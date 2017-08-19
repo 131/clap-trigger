@@ -80,6 +80,7 @@ var ClapTrigger = new Class({
     var args = ({
       'Linux'      : ['-t', 'alsa', 'hw:1,0'],
       'Windows_NT' : ['-t', 'waveaudio', '-d'],
+      'Darwin'     : ['-t', 'coreaudio', 'default']
     }) [os.type()];
 
     args.push("-t",  "wav", "-n");
